@@ -31,12 +31,6 @@ class PhishTankCrawlerGUI:
         self.end_page_entry = ttk.Entry(master, width=20)
         self.end_page_entry.grid(row=1, column=3, padx=(5, 10), pady=5, sticky='w')
 
-        # User-Agent Entry
-        self.user_agent_label = ttk.Label(master, text="User-Agent:")
-        self.user_agent_label.grid(row=3, column=0, padx=5, pady=5, sticky='e')
-        self.user_agent_entry = ttk.Entry(master, width=51)
-        self.user_agent_entry.grid(row=3, column=1, columnspan=3, padx=5, pady=5, sticky='w')
-
         # Cookies Entries
         self.cookies_labels = []
         self.cookies_entries = []
@@ -62,10 +56,6 @@ class PhishTankCrawlerGUI:
         # Start Crawling Button
         self.start_button = ttk.Button(master, text="Start Crawling", command=self.start_crawling)
         self.start_button.grid(row=11, column=0, columnspan=5, padx=5, pady=5)
-
-        # Crawling Status Label
-        self.status_label = ttk.Label(master, text="")
-        self.status_label.grid(row=12, column=0, columnspan=5, padx=5, pady=5)
 
     def browse_location(self):
         filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -124,7 +114,8 @@ class PhishTankCrawlerGUI:
         end_page = int(self.end_page_entry.get())
 
         # Construct headers with user agent and cookies
-        headers = {'User-Agent': self.user_agent_entry.get()}
+        ### USER-AGENT 추가하기 ###
+        headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
         cookies = {self.cookie_names[i]: entry.get() for i, entry in enumerate(self.cookies_entries)}
         headers['Cookie'] = "; ".join([f"{name}={value}" for name, value in cookies.items()])
 
