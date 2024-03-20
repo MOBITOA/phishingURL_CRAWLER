@@ -11,8 +11,6 @@ search_url = 'phish_search.php?page={}&active=y&valid=y&Search=Search'
 header = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'}
 
 # Cloudflare 인코딩 된 이메일 디코딩하는 함수
-
-
 def decode_cf_email(encoded_string):
     r = int(encoded_string[:2], 16)
     email = ''.join([chr(int(encoded_string[i:i+2], 16) ^ r)
