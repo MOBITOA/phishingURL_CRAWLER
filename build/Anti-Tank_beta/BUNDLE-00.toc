@@ -1,3 +1,0 @@
-([('Anti-Tank_beta',
-   '/Users/mobicom/Desktop/phishingURL_CRAWLER/dist/Anti-Tank_beta',
-   'EXECUTABLE')],)
