@@ -166,12 +166,12 @@ class PhishTankCrawlerGUI:
             writer.writeheader()
             for item in data:
                 writer.writerow({'Extracted Link': item['url']})
+
 def decode_cf_email(encoded_string):
         r = int(encoded_string[:2], 16)
         email = ''.join([chr(int(encoded_string[i:i+2], 16) ^ r)
                         for i in range(2, len(encoded_string), 2)])
         return email
-
 
 def main():
     root = tk.Tk()
