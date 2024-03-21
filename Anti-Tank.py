@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import csv
 import tkinter.messagebox as msgbox
+import os
 
 class PhishTankCrawlerGUI:
     ####################
@@ -59,11 +60,24 @@ class PhishTankCrawlerGUI:
         # Start Crawling Button
         self.start_button = ttk.Button(master, text="Start Crawling", command=self.start_crawling)
         self.start_button.grid(row=11, column=0, columnspan=5, padx=5, pady=5)
-    def browse_location(self):
-        filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
-                                                    filetypes=(("CSV files", "*.csv"), ("all files", "*.*")))
+        # 파일 브라우저에서 최근 저장된 위치 기억
+        self.last_save_location = os.getcwd()
 
-        self.csv_location_entry.insert(0, filename)
+    def browse_location(self):
+        start_page = self.start_page_entry.get()
+        end_page = self.end_page_entry.get()
+        default_filename = f"phish_tank_{start_page}_to_{end_page}.csv"
+
+        filename = filedialog.asksaveasfilename(initialdir=self.last_save_location, title="Select file",
+                                                filetypes=(
+                                                    ("CSV files", "*.csv"), ("all files", "*.*")),
+                                                initialfile=default_filename)  # 자동으로 파일 이름 생성
+
+        if filename:
+            self.last_save_location = os.path.dirname(
+                filename)  # 최근 저장된 위치 업데이트
+            self.csv_location_entry.delete(0, tk.END)  # Entry 초기화
+            self.csv_location_entry.insert(0, filename)  # 파일 경로 삽입
 
     ###################################################################
     #                                                                 #
@@ -103,9 +117,11 @@ class PhishTankCrawlerGUI:
         extracted_links = []
         
         stop_flag = False
+        
+        current_page = start_page
 
         for page in range(start_page, end_page + 1):
-            current_page = start_page
+            
             print(f"<< 현재페이지 : {current_page} >>")
             print(f"<< 남은페이지 : {end_page - current_page} >>")
             url = urljoin(base_url, search_url.format(page))
@@ -125,6 +141,7 @@ class PhishTankCrawlerGUI:
 
                     if extracted_link:
                         extracted_links.append({'url': extracted_link})
+                        
                     else:
                         # 아마 403 ...
                         print("피시탱크 서치 페이지 에러")
@@ -135,6 +152,8 @@ class PhishTankCrawlerGUI:
                 print("피시탱크 메인 페이지 에러")
                 break
 
+            current_page += 1
+
         return extracted_links
 
     def start_crawling(self):
@@ -143,7 +162,8 @@ class PhishTankCrawlerGUI:
 
         # Construct headers with user agent and cookies
         ### USER-AGENT 추가하기 ###
-        headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
+        headers = {
+            'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
         cookies = {self.cookie_names[i]: entry.get() for i, entry in enumerate(self.cookies_entries)}
         headers['Cookie'] = "; ".join([f"{name}={value}" for name, value in cookies.items()])
 
