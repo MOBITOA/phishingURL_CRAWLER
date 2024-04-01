@@ -163,7 +163,7 @@ class PhishTankCrawlerGUI:
         # Construct headers with user agent and cookies
         ### USER-AGENT 추가하기 ###
         headers = {
-            'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
+            'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"}
         cookies = {self.cookie_names[i]: entry.get() for i, entry in enumerate(self.cookies_entries)}
         headers['Cookie'] = "; ".join([f"{name}={value}" for name, value in cookies.items()])
 
